@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hinweisgeberschutzgesetz (HinSchG) Meldestellen-Prüfer, Fristen-Rechner &amp; Richtlinien-Generator | DACH Digitalwerk</title>
+  <meta name="description" content="Kostenloser HinSchG Compliance-Check für Arbeitgeber ab 50 Mitarbeitenden (§§ 12–18, § 40 HinSchG Bußgeld bis 50.000 €), 7-Tage-/3-Monats-Fristenrechner sowie Generator für Verfahrensordnung, Mitarbeitenden-Aushang &amp; Art.-13-DSGVO-Hinweise." />
+  <link rel="canonical" href="https://dachdigitalwerk.github.io/hinweisgeberschutz-meldestelle-generator/" />
+  <style>
+    :root {
+      --bg: #0b1020; --card: #131b33; --border: #263359;
+      --accent: #38bdf8; --accent2: #10b981; --warn: #f59e0b; --danger: #ef4444;
+      --text: #f1f5f9; --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    header { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-bottom: 1px solid var(--border); padding: 2.4rem 1.25rem; text-align: center; }
+    .badge { display: inline-block; background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.4); padding: 0.3rem 0.9rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.85rem; }
+    h1 { font-size: clamp(1.6rem, 3.3vw, 2.35rem); margin-bottom: 0.7rem; }
+    .subtitle { max-width: 820px; margin: 0 auto 1.1rem; color: var(--muted); font-size: 1rem; }
+    .top-links { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+    .container { max-width: 1140px; margin: 2rem auto; padding: 0 1.25rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.55rem; margin-bottom: 1.5rem; }
+    h2 { font-size: 1.22rem; margin-bottom: 0.95rem; color: #fff; }
+    label { display: block; font-size: 0.88rem; font-weight: 600; margin: 0.7rem 0 0.28rem; color: #cbd5e1; }
+    input[type="text"], input[type="email"], input[type="date"], select, textarea {
+      width: 100%; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1px solid var(--border);
+      background: #0b1329; color: var(--text); font-size: 0.92rem;
+    }
+    textarea { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.83rem; line-height: 1.5; }
+    .check-item { display: flex; align-items: flex-start; gap: 0.6rem; font-weight: 400; margin: 0.45rem 0; cursor: pointer; font-size: 0.9rem; }
+    .check-item input { margin-top: 0.25rem; accent-color: var(--accent2); }
+    .status-box { background: #0d162e; border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.15rem; margin-bottom: 1rem; }
+    .score-num { font-size: 1.8rem; font-weight: 800; color: var(--accent2); }
+    .pill { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; margin-top: 0.35rem; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 0.9rem; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.68rem 1.1rem; border-radius: 8px; font-weight: 700; font-size: 0.9rem; border: none; cursor: pointer; text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #081024; }
+    .btn-success { background: var(--accent2); color: #052014; }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .pricing { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1rem; }
+    @media (max-width: 760px) { .pricing { grid-template-columns: 1fr; } }
+    .price-card { background: #0d162e; border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem; }
+    .price-card.featured { border-color: var(--accent2); box-shadow: 0 0 0 1px rgba(16,185,129,0.35); }
+    .price-tag { font-size: 1.65rem; font-weight: 800; margin: 0.4rem 0 0.75rem; color: #fff; }
+    ul.clean { list-style: none; margin: 0.65rem 0 1.1rem; }
+    ul.clean li { padding: 0.28rem 0; font-size: 0.9rem; color: #cbd5e1; }
+    ul.clean li::before { content: "✓ "; color: var(--accent2); font-weight: 800; }
+    footer { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--border); margin-top: 2rem; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="badge">§§ 12–18 &amp; § 40 HinSchG · EU-Whistleblowing-RL 2019/1937 · AT HSchG · Pflicht ab 50 Mitarbeitenden</div>
+    <h1>Hinweisgeberschutz (HinSchG): Meldestellen-Check &amp; Verfahrensordnungs-Generator</h1>
+    <p class="subtitle">
+      Prüfen Sie Ihre gesetzliche Meldestellen-Pflicht &amp; Bußgeld-Exposition (bis 50.000 € nach § 40 HinSchG), berechnen Sie die gesetzlichen 7-Tage- und 3-Monats-Fristen und generieren Sie sofort Ihre Verfahrensordnung, den Mitarbeitenden-Aushang (§ 13 Abs. 2 HinSchG) und den Art.-13-DSGVO-Datenschutzhinweis.
+    </p>
+    <div class="top-links">
+      <a class="btn btn-success" href="./HinSchG-Interne-Meldestelle-Starter-Kit.zip" download>📦 Kostenloses HinSchG-Starter-Kit (.ZIP, 5 Vorlagen) laden</a>
+      <a class="btn btn-outline" href="https://dachdigitalwerk.github.io/">← Zurück zum DACH Digitalwerk Hub</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <section class="card">
+        <h2>1. Arbeitgeber-Eckdaten &amp; Meldestellen-Konfiguration</h2>
+        <label for="company">Arbeitgeber / Beschäftigungsgeber</label>
+        <input type="text" id="company" value="Muster Mittelstand GmbH" oninput="renderHin()" />
+
+        <label for="officer">Meldestellen-Beauftragte(r) (§ 15 HinSchG / intern oder externer Ombudsdienst)</label>
+        <input type="text" id="officer" value="Dr. Anna Beispiel (Compliance-Beauftragte)" oninput="renderHin()" />
+
+        <label for="channel">Vertraulicher Meldekanal (E-Mail / Portal + Telefon)</label>
+        <input type="text" id="channel" value="meldestelle@muster-mittelstand.de · Tel. +49 89 123456-99" oninput="renderHin()" />
+
+        <label for="headcount">Beschäftigtenzahl &amp; Branche (§ 12 Abs. 2 &amp; Abs. 3 HinSchG)</label>
+        <select id="headcount" onchange="renderHin()">
+          <option value="50to249" selected>50 bis 249 Beschäftigte (Pflicht aktiv – gemeinsame Meldestelle im Konzern/Verbund nach § 14 Abs. 2 zulässig)</option>
+          <option value="250plus">Ab 250 Beschäftigte (Eigene interne Meldestelle zwingend verpflichtend)</option>
+          <option value="finance">Finanzdienstleister / Wertpapierinstitut / KVG (§ 12 Abs. 3 HinSchG: Pflicht ab 1 Beschäftigten!)</option>
+          <option value="under50">Unter 50 Beschäftigte (freiwillige Einrichtung zur Haftungsprävention &amp; Lieferketten-Compliance)</option>
+        </select>
+
+        <label for="anon">Anonyme Meldungen (§ 16 Abs. 1 HinSchG)</label>
+        <select id="anon" onchange="renderHin()">
+          <option value="yes" selected>Ja – auch anonym eingehende Meldungen werden entgegengenommen und bearbeitet (Best Practice)</option>
+          <option value="confidential">Vertrauliche Meldung mit Identitätsschutz nach § 8 HinSchG</option>
+        </select>
+
+        <h2 style="margin-top:1.35rem;">2. Gesetzliche Pflicht-Checkliste (§§ 8–18 HinSchG)</h2>
+        <label class="check-item"><input type="checkbox" class="hchk" checked onchange="renderHin()" data-txt="Interne Meldestelle für Textform, mündliche Meldung und persönliches Treffen (§ 16 Abs. 3 HinSchG) eingerichtet" /> Meldewege für Textform, Telefon &amp; persönliches Gespräch (§ 16 Abs. 3) eingerichtet</label>
+        <label class="check-item"><input type="checkbox" class="hchk" checked onchange="renderHin()" data-txt="Strikte Zugriffsbeschränkung auf benannte Beauftragte (§ 8 &amp; § 16 Abs. 2 HinSchG) technisch sichergestellt" /> Technischer Zugriffsschutz: Kein Zugriff durch unbefugte IT-Admins oder Dritte (§ 16 Abs. 2)</label>
+        <label class="check-item"><input type="checkbox" class="hchk" checked onchange="renderHin()" data-txt="Unabhängigkeit &amp; nachgewiesene Fachkunde der Meldestellen-Beauftragten (§ 15 Abs. 1 &amp; 2 HinSchG)" /> Unabhängigkeit &amp; Fachkunde-Schulungsnachweis nach § 15 Abs. 2 HinSchG dokumentiert</label>
+        <label class="check-item"><input type="checkbox" class="hchk" onchange="renderHin()" data-txt="Verbindlicher Fristen-Workflow: 7-Tage-Eingangsbestätigung &amp; 3-Monats-Rückmeldung (§ 17 HinSchG)" /> Fristen-Kontrolle für 7-Tage-Bestätigung &amp; 3-Monats-Rückmeldung (§ 17 HinSchG) aktiv</label>
+        <label class="check-item"><input type="checkbox" class="hchk" onchange="renderHin()" data-txt="Transparente Information der Beschäftigten inkl. Hinweis auf externe Meldestellen (§ 13 Abs. 2 HinSchG)" /> Mitarbeitenden-Aushang inkl. Pflichthinweis auf externe Meldestellen (BfJ/BaFin/BKartA) veröffentlicht</label>
+        <label class="check-item"><input type="checkbox" class="hchk" onchange="renderHin()" data-txt="DSGVO Art. 13/14 Datenschutzhinweis &amp; Verzeichnis von Verarbeitungstätigkeiten (Art. 30 DSGVO) ergänzt" /> Datenschutzinformation (Art. 13/14 DSGVO i.V.m. § 10 HinSchG) &amp; VVT aktualisiert</label>
+        <label class="check-item"><input type="checkbox" class="hchk" onchange="renderHin()" data-txt="Löschkonzept gemäß § 11 Abs. 5 HinSchG (Löschung 3 Jahre nach Verfahrensabschluss) implementiert" /> Gesetzliche 3-Jahres-Löschfrist nach Verfahrensabschluss (§ 11 Abs. 5 HinSchG) hinterlegt</label>
+      </section>
+
+      <section class="card">
+        <h2>3. Bußgeld-Risiko &amp; Generierte Compliance-Dokumente</h2>
+        <div class="status-box">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:0.8rem;color:var(--muted);">HinSchG-Erfüllungsgrad</div>
+              <div class="score-num" id="hinScore">43 %</div>
+            </div>
+            <div id="hinBadge" class="pill" style="background:rgba(245,158,11,0.18);color:#fbbf24;border:1px solid rgba(245,158,11,0.4);">
+              Gesetzliche Meldestellen-Pflicht AKTIV (§ 12 HinSchG)
+            </div>
+          </div>
+          <p id="hinDetail" style="font-size:0.88rem;color:#cbd5e1;margin-top:0.55rem;"></p>
+        </div>
+
+        <label for="hinDocType">Dokument auswählen (sofort druck- &amp; einsatzfertig)</label>
+        <select id="hinDocType" onchange="renderHin()">
+          <option value="policy">1. Interne Verfahrensordnung Hinweisgeberschutz (§§ 12–18 HinSchG)</option>
+          <option value="notice">2. Mitarbeitenden-Bekanntmachung / Intranet- &amp; Schwarzes-Brett-Aushang (§ 13 Abs. 2)</option>
+          <option value="privacy">3. DSGVO Art. 13 / Art. 14 Datenschutzhinweis (§ 10 HinSchG)</option>
+        </select>
+
+        <textarea id="hinOut" rows="15" style="margin-top:0.65rem;"></textarea>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="copyHin()">📋 Dokument kopieren</button>
+          <button class="btn btn-success" onclick="downloadHin()">💾 Als Markdown (.md) speichern</button>
+          <button class="btn btn-outline" onclick="window.print()">🖨️ Als PDF drucken</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>4. Gesetzlicher HinSchG-Fristen-Rechner für eingehende Meldungen (§ 17 &amp; § 11 Abs. 5 HinSchG)</h2>
+      <div class="grid" style="align-items:center;margin-bottom:0;">
+        <div>
+          <label for="reportDate">Eingangsdatum der Meldung</label>
+          <input type="date" id="reportDate" value="2026-11-07" onchange="calcDeadlines()" />
+          <label for="closeDate">Voraussichtliches Abschlussdatum des Verfahrens (für Löschfrist)</label>
+          <input type="date" id="closeDate" value="2027-01-15" onchange="calcDeadlines()" />
+        </div>
+        <div id="deadlineOut" class="status-box" style="margin-bottom:0;"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Schlüsselfertiges HinSchG-Meldestellen-Paket für Arbeitgeber ab 50 Mitarbeitenden</h2>
+      <div class="pricing">
+        <div class="price-card">
+          <h3>HinSchG Starter-Kit (Open-Access)</h3>
+          <div class="price-tag">0 € <span style="font-size:0.85rem;color:var(--muted);font-weight:500;">sofort herunterladbar</span></div>
+          <ul class="clean">
+            <li>Interaktiver HinSchG-Pflicht-, Bußgeld- &amp; Fristen-Rechner</li>
+            <li>Generator für Verfahrensordnung, Aushang &amp; DSGVO-Hinweise</li>
+            <li>5 sofort nutzbare Vorlagen inkl. Fallakten-Register (`.CSV`) als `.ZIP`</li>
+          </ul>
+          <a class="btn btn-outline" style="width:100%;" href="./HinSchG-Interne-Meldestelle-Starter-Kit.zip" download>📦 Starter-Kit (.ZIP) laden</a>
+        </div>
+        <div class="price-card featured">
+          <h3>HinSchG Meldestellen-Komplettpaket Pro</h3>
+          <div class="price-tag">59 € <span style="font-size:0.85rem;color:var(--muted);font-weight:500;">einmalig · statt mtl. SaaS-Gebühr</span></div>
+          <ul class="clean">
+            <li>Individuell auf Ihr Unternehmen abgestimmte HinSchG-Verfahrensordnung &amp; Betriebsvereinbarungs-Entwurf (§ 87 Abs. 1 Nr. 1 &amp; 6 BetrVG)</li>
+            <li>Schulungs- &amp; Fachkunde-Leitfaden für interne Meldestellen-Beauftragte (§ 15 Abs. 2 HinSchG)</li>
+            <li>Verschlüsseltes Offline-Fallakten-Dashboard + VVT-Eintrag nach Art. 30 DSGVO</li>
+          </ul>
+          <a class="btn btn-success" style="width:100%;" href="https://dachdigital.gumroad.com/l/gthgwc" target="_blank" rel="noopener">🚀 HinSchG-Komplettpaket sichern (59 € einmalig)</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    DACH Digitalwerk · 100 % Client-Side im Browser · Kontakt: <a href="mailto:dach.digitalwerk@gmail.com">dach.digitalwerk@gmail.com</a>
+  </footer>
+
+  <script>
+    function renderHin() {
+      const comp = document.getElementById('company').value.trim() || 'Muster GmbH';
+      const off = document.getElementById('officer').value.trim() || 'Compliance-Beauftragte(r)';
+      const chan = document.getElementById('channel').value.trim() || 'meldestelle@unternehmen.de';
+      const hc = document.getElementById('headcount').value;
+      const anon = document.getElementById('anon').value;
+      const docType = document.getElementById('hinDocType').value;
+
+      const chks = Array.from(document.querySelectorAll('.hchk'));
+      const done = [], open = [];
+      chks.forEach(c => (c.checked ? done : open).push(`- [${c.checked ? 'x' : ' '}] ${c.dataset.txt}`));
+      const pct = Math.round((done.length / chks.length) * 100);
+      document.getElementById('hinScore').textContent = pct + ' %';
+
+      const badge = document.getElementById('hinBadge');
+      const detail = document.getElementById('hinDetail');
+      if (hc === 'under50') {
+        badge.textContent = 'Freiwillige Best-Practice (unter 50 Beschäftigte)';
+        badge.style.color = '#34d399';
+        detail.textContent = 'Unter 50 Beschäftigten besteht (außerhalb des Finanzsektors nach § 12 Abs. 3 HinSchG) keine gesetzliche Pflicht, eine freiwillige Meldestelle schützt jedoch vor direkten Behördenmeldungen und erfüllt B2B-Lieferkettenanforderungen.';
+      } else if (hc === '50to249') {
+        badge.textContent = 'PFLICHT AKTIV (§ 12 Abs. 2 HinSchG · Bußgeld bis 20.000 € / 50.000 €)';
+        badge.style.color = '#fbbf24';
+        detail.textContent = 'Ab 50 Beschäftigten ist eine interne Meldestelle zwingend einzurichten (§ 40 Abs. 2 Nr. 2 HinSchG: bis 20.000 € Bußgeld bei Nichteinrichtung; bis 50.000 € bei Behinderung einer Meldung oder Verstoß gegen das Vertraulichkeitsgebot, bei juristischen Personen nach § 30 OWiG vervielfachbar). Gemeinsame Meldestelle nach § 14 Abs. 2 HinSchG ist zulässig.';
+      } else {
+        badge.textContent = 'STRENGE PFLICHT AKTIV (Eigene Meldestelle zwingend!)';
+        badge.style.color = '#f87171';
+        detail.textContent = hc === 'finance'
+          ? 'Sonderregelung § 12 Abs. 3 HinSchG: Im Finanz- und Wertpapiersektor besteht die Pflicht zur Einrichtung einer internen Meldestelle unabhängig von der Beschäftigtenzahl bereits ab dem 1. Mitarbeitenden!'
+          : 'Ab 250 Beschäftigten muss jedes Unternehmen eine eigene interne Meldestelle betreiben (keine gemeinsame Konzern-Meldestelle nach § 14 Abs. 2 HinSchG zulässig).';
+      }
+
+      const anonClause = anon === 'yes'
+        ? 'Die interne Meldestelle nimmt auch anonym eingehende Meldungen entgegen und bearbeitet diese nach denselben Sorgfaltsmaßstäben (§ 16 Abs. 1 HinSchG).'
+        : 'Meldungen werden unter strengem Identitätsschutz gemäß § 8 HinSchG vertraulich entgegengenommen.';
+
+      let txt = '';
+      if (docType === 'policy') {
+        txt = `# Interne Verfahrensordnung zum Hinweisgeberschutz (§§ 12–18 HinSchG)
+
+**Beschäftigungsgeber:** ${comp}
+**Beauftragte Person der internen Meldestelle (§ 15 HinSchG):** ${off}
+**Vertrauliche Meldekanäle:** ${chan}
+
+## 1. Sachlicher und persönlicher Anwendungsbereich (§§ 1, 2 HinSchG)
+Alle Beschäftigten sowie Personen, die im Zusammenhang mit ihrer beruflichen Tätigkeit mit der **${comp}** in Kontakt stehen, können Hinweise auf Verstöße im Sinne des § 2 HinSchG vertraulich melden. ${anonClause}
+
+## 2. Vertraulichkeit & Unabhängigkeit (§§ 8, 15 HinSchG)
+Die Meldestelle handelt bei der Ausübung ihrer Tätigkeit unabhängig (§ 15 Abs. 1 HinSchG). Die Identität der hinweisgebenden Person sowie der von einer Meldung betroffenen Personen wird streng vertraulich geschützt (§ 8 HinSchG).
+
+## 3. Gesetzlicher Ablauf & Fristen (§§ 17, 18 HinSchG)
+1. **Eingangsbestätigung:** Spätestens nach **7 Kalendertagen** (§ 17 Abs. 1 Nr. 1 HinSchG).
+2. **Prüfung & Folgemaßnahmen:** Stichhaltigkeitsprüfung und Einleitung geeigneter Folgemaßnahmen (§ 18 HinSchG).
+3. **Inhaltliche Rückmeldung:** Spätestens **3 Monate** nach Bestätigung des Eingangs (§ 17 Abs. 2 HinSchG).
+4. **Schutz vor Repressalien:** Jede Benachteiligung hinweisgebender Personen ist nach § 36 HinSchG untersagt.
+5. **Dokumentation & Löschung:** Löschung der Dokumentation **3 Jahre** nach Abschluss des Verfahrens (§ 11 Abs. 5 HinSchG).
+
+## 4. Aktueller Compliance-Status (${pct} %)
+${done.join('\n')}
+${open.length ? '\n### Offene Punkte:\n' + open.join('\n') : ''}`;
+      } else if (docType === 'notice') {
+        txt = `# Bekanntmachung für Beschäftigte gemäß § 13 Abs. 2 HinSchG – ${comp}
+
+Liebe Mitarbeiterinnen und Mitarbeiter,
+
+gemäß §§ 12 ff. Hinweisgeberschutzgesetz (HinSchG) hat die **${comp}** eine vertrauliche interne Meldestelle eingerichtet:
+
+- **Zuständige(r) Meldestellen-Beauftragte(r):** ${off}
+- **Meldekanäle (Textform, telefonisch & persönliches Gespräch nach § 16 Abs. 3 HinSchG):** ${chan}
+
+${anonClause} Sie erhalten spätestens innerhalb von 7 Tagen eine Eingangsbestätigung und innerhalb von 3 Monaten eine Rückmeldung zu den ergriffenen Folgemaßnahmen (§ 17 HinSchG). Hinweisgebende sind nach § 36 HinSchG gesetzlich vor jeglichen Repressalien geschützt.
+
+Gemäß § 13 Abs. 2 HinSchG informieren wir darüber, dass ergänzend staatliche externe Meldestellen beim Bundesamt für Justiz (BfJ), bei der BaFin und beim Bundeskartellamt bestehen; wir bitten jedoch darum, bevorzugt unsere interne Meldestelle zu nutzen, damit etwaige Verstöße unmittelbar intern behoben werden können.`;
+      } else {
+        txt = `# Datenschutzhinweis nach Art. 13 / Art. 14 DSGVO i. V. m. § 10 HinSchG
+
+**Verantwortlicher:** ${comp}
+**Zuständige Stelle:** Interne Meldestelle (${off} · ${chan})
+
+**Rechtsgrundlage:** Art. 6 Abs. 1 lit. c DSGVO i. V. m. §§ 10, 12–18 HinSchG (Erfüllung der gesetzlichen Pflicht zur Einrichtung und zum Betrieb einer internen Meldestelle).
+**Zugriffsbeschränkung:** Ausschließlicher Zugriff durch die nach § 15 HinSchG benannte Person unter Wahrung des Vertraulichkeitsgebots (§ 8 HinSchG).
+**Speicherdauer:** Gesetzliche Löschung 3 Jahre nach Abschluss des Verfahrens gemäß § 11 Abs. 5 HinSchG.`;
+      }
+      document.getElementById('hinOut').value = txt;
+    }
+
+    function addDays(d, days) {
+      const r = new Date(d.getTime());
+      r.setDate(r.getDate() + days);
+      return r;
+    }
+
+    function addMonths(d, months) {
+      const r = new Date(d.getTime());
+      r.setMonth(r.getMonth() + months);
+      return r;
+    }
+
+    function fmtDate(d) {
+      return d.toISOString().slice(0, 10);
+    }
+
+    function calcDeadlines() {
+      const rVal = document.getElementById('reportDate').value;
+      const cVal = document.getElementById('closeDate').value;
+      if (!rVal) return;
+      const rDate = new Date(rVal + 'T00:00:00');
+      const ackDate = addDays(rDate, 7);
+      const fbDate = addMonths(ackDate, 3);
+      const closeDate = cVal ? new Date(cVal + 'T00:00:00') : fbDate;
+      const delDate = new Date(closeDate.getTime());
+      delDate.setFullYear(delDate.getFullYear() + 3);
+
+      document.getElementById('deadlineOut').innerHTML = `
+        <div>📌 <strong>Späteste Eingangsbestätigung (§ 17 Abs. 1 Nr. 1 – 7 Tage):</strong> <code>${fmtDate(ackDate)}</code></div>
+        <div style="margin-top:0.35rem;">📣 <strong>Späteste Rückmeldung an Hinweisgeber (§ 17 Abs. 2 – +3 Monate):</strong> <code>${fmtDate(fbDate)}</code></div>
+        <div style="margin-top:0.35rem;">🗑️ <strong>Reguläre Aktenlöschung (§ 11 Abs. 5 – 3 Jahre nach Abschluss):</strong> <code>${fmtDate(delDate)}</code></div>
+      `;
+    }
+
+    function copyHin() {
+      const el = document.getElementById('hinOut');
+      el.select();
+      navigator.clipboard.writeText(el.value);
+      alert('HinSchG-Dokument in die Zwischenablage kopiert!');
+    }
+
+    function downloadHin() {
+      const blob = new Blob([document.getElementById('hinOut').value], { type: 'text/markdown;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'HinSchG_Meldestelle_Dokument.md';
+      a.click();
+    }
+
+    renderHin();
+    calcDeadlines();
+  </script>
+</body>
+</html>
